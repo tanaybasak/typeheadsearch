@@ -16,7 +16,7 @@ const Search = ({ data, className }) => {
     setTextValue(e);
     if (textValue.length > 1) {
       const results = data.filter((o) =>
-        Object.keys(o).some((k) => 
+        Object.keys(o).some((k) =>
           o[k].toLowerCase().includes(textValue.toLowerCase())
         )
       );
@@ -90,11 +90,13 @@ const Search = ({ data, className }) => {
 
 Search.defaultProps = {
   className: "",
+  data: [],
 };
 
 Search.propTypes = {
   /** Class/clasess will be applied on the parent div of MenuList */
   className: PropTypes.string,
+  data: PropTypes.array,
 };
 
 export default Search;
