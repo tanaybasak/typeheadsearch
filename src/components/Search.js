@@ -14,7 +14,7 @@ const Search = ({ data, className }) => {
 
   const textChangeFunc = (e) => {
     setTextValue(e);
-    if (textValue.length > 3) {
+    if (textValue.length > 1) {
       setOverlay(true);
       const results = data.filter((o) =>
         Object.keys(o).some((k) =>
@@ -27,37 +27,47 @@ const Search = ({ data, className }) => {
     }
   };
 
+  const suggestionSelected = (value) => {
+    setTextValue(value.title);
+    setSuggesstion([]);
+  };
+
   const getHighlightedText = (text, highlight) => {
     // Split on highlight term and include term into parts, ignore case
     const parts = text.split(new RegExp(`(${highlight})`, "gi"));
     return (
       <span>
-        {" "}
         {parts.map((part, i) => (
           <span
             key={i}
             style={
               part.toLowerCase() === highlight.toLowerCase()
-                ? { fontWeight: "bold", backgroundColor: '#EEE8AA' }
+                ? { fontWeight: "bold", backgroundColor: "#EEE8AA" }
                 : {}
             }
           >
             {part}
           </span>
-        ))}{" "}
+        ))}
       </span>
     );
   };
 
   return (
     <div className={classNames.join(" ")}>
-      <TextInput className="text-input" onChange={textChangeFunc} />
+      <TextInput
+        className="text-input"
+        value={textValue}
+        onChange={textChangeFunc}
+      />
       {showOverlay ? (
         <>
           {suggession.map((item, i) => {
             return (
               <div
                 className="searchResults shadow border w-100 rounded-lg"
+                onClick={(e) => suggestionSelected(item, e)}
+                style={{ cursor: "pointer" }}
                 key={`item-${i}`}
               >
                 <p>

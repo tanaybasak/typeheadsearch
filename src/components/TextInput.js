@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const TextInput = ({ className, ...restProps }) => {
   const [value, setValue] = useState("");
@@ -7,6 +7,13 @@ const TextInput = ({ className, ...restProps }) => {
     setValue(e.target.value);
     restProps.onChange(e.target.value);
   };
+
+  useEffect(() => {
+    if (restProps.value || restProps.value === '') {
+      setValue(restProps.value);
+    }
+  }, [restProps.value]);
+
 
   if(className) {
       classnames.push(className);
@@ -18,6 +25,7 @@ const TextInput = ({ className, ...restProps }) => {
         type="text"
         className={classnames.join(' ')}
         value={value}
+        autoComplete="off"
         id="search"
         onChange={onChangeText}
       />
