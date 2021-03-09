@@ -1,26 +1,23 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TextInput from "./TextInput";
-import useDebounce from "../utils/debounce";
 
 const Search = ({ data, className }) => {
   const classNames = ["p-5"];
   const [showOverlay, setOverlay] = useState(false);
   const [textValue, setTextValue] = useState("");
   const [suggession, setSuggesstion] = useState([]);
-  const debouncedSearchTerm = useDebounce(textValue, 500);
 
   if (className) {
     classNames.push(className);
   }
 
-  
   const textChangeFunc = (e) => {
     setTextValue(e);
     if (textValue.length > 1) {
       const results = data.filter((o) =>
-        Object.keys(o).some((k) =>
-          o[k].toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+        Object.keys(o).some((k) => 
+          o[k].toLowerCase().includes(textValue.toLowerCase())
         )
       );
       if (results.length) {
@@ -28,7 +25,6 @@ const Search = ({ data, className }) => {
         setSuggesstion(results);
       } else {
         setOverlay(false);
-        console.log("no data");
       }
     } else {
       setOverlay(false);
