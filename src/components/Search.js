@@ -15,13 +15,18 @@ const Search = ({ data, className }) => {
   const textChangeFunc = (e) => {
     setTextValue(e);
     if (textValue.length > 1) {
-      setOverlay(true);
       const results = data.filter((o) =>
         Object.keys(o).some((k) =>
           o[k].toLowerCase().includes(textValue.toLowerCase())
         )
       );
-      setSuggesstion(results);
+      if (results.length) {
+        setOverlay(true);
+        setSuggesstion(results);
+      } else {
+        setOverlay(false);
+        console.log("no data");
+      }
     } else {
       setOverlay(false);
     }
@@ -30,6 +35,7 @@ const Search = ({ data, className }) => {
   const suggestionSelected = (value) => {
     setTextValue(value.title);
     setSuggesstion([]);
+    setOverlay(false);
   };
 
   const getHighlightedText = (text, highlight) => {
@@ -61,11 +67,11 @@ const Search = ({ data, className }) => {
         onChange={textChangeFunc}
       />
       {showOverlay ? (
-        <>
+        <div className="shadow rounded searchResults">
           {suggession.map((item, i) => {
             return (
               <div
-                className="searchResults shadow border w-100 rounded-lg"
+                className="w-100 rounded-lg"
                 onClick={(e) => suggestionSelected(item, e)}
                 style={{ cursor: "pointer" }}
                 key={`item-${i}`}
@@ -77,7 +83,7 @@ const Search = ({ data, className }) => {
               </div>
             );
           })}
-        </>
+        </div>
       ) : null}
     </div>
   );
